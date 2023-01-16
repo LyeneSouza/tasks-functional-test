@@ -4,22 +4,34 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 
 import static org.junit.Assert.assertEquals;
 
 public class TasksTest {
 
-    public WebDriver acessarAplicacao() {
-        WebDriver driver = new ChromeDriver();
-        driver.navigate().to("http://localhost:8001/tasks");
+    public WebDriver acessarAplicacao() throws MalformedURLException {
+        //WebDriver driver = new ChromeDriver();
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        chromeOptions.merge(capabilities);
+        WebDriver driver = new RemoteWebDriver(new URL("http://192.168.0.252:4444/wd/hub"), capabilities);
+
+        driver.navigate().to("http://192.168.0.252:8001/tasks"); // passar o ip ao inves do localhost quando usar o grid
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         return driver;
     }
 
     @Test
-    public void deveSalvarTaskComSucesso() {
+    public void deveSalvarTaskComSucesso() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
 
         // Cicar no botao de adicionar tarefa
@@ -42,7 +54,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveSalvarTaskComDataPassada() {
+    public void naoDeveSalvarTaskComDataPassada() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try {
             // Cicar no botao de adicionar tarefa
@@ -66,7 +78,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveSalvarTaskSemDescricao() {
+    public void naoDeveSalvarTaskSemDescricao() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try {
             // Cicar no botao de adicionar tarefa
@@ -87,7 +99,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveSalvarTaskSemData() {
+    public void naoDeveSalvarTaskSemData() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try {
             // Cicar no botao de adicionar tarefa
