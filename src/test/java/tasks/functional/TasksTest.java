@@ -102,7 +102,7 @@ public class TasksTest {
     public void naoDeveSalvarTaskSemData() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try {
-            // Cicar no botao de adicionar tarefa
+            // Clicar no botao de adicionar tarefa
             driver.findElement(By.id("addTodo")).click();
 
             // Escrever a descricao da tarefa
